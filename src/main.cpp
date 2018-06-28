@@ -21,7 +21,7 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 }
-// hello dere
+// hello dere no
 void loop()
 {
 
