@@ -1,14 +1,3 @@
-/*
- * created by Rui Santos, http://randomnerdtutorials.com
- *
- * Complete Guide for Ultrasonic Sensor HC-SR04
- *
-    Ultrasonic sensor Pins:
-        VCC: +5VDC
-        Trig : Trigger (INPUT) - Pin11
-        Echo: Echo (OUTPUT) - Pin 12
-        GND: GND
- */
 #include <Arduino.h>
 //First Ultrasonic Sensor
 int trigPin = 11;
@@ -16,10 +5,10 @@ int echoPin = 12;
 //Second
 int trigPin2 = 10;
 int echoPin2 = 9;
-long duration, cm, inches;
+long duration, cm, firstSen, secondSen;
 int speaker = 8;
 
-void distance(long cm, int speakerInput)
+void frequencyDistance(long cm, int speakerInput)
 {
 
     tone(speakerInput,(100+cm)*100);
@@ -28,43 +17,36 @@ void distance(long cm, int speakerInput)
       noTone(speakerInput);
     }
 }
+void sensors(int trig, int echo){
+  digitalWrite(trig, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  duration = pulseIn(echo, HIGH);
+  cm = (duration/2) / 29.1;
+
+}
 void setup() {
       //Serial Port begin
       Serial.begin (9600);
   //Define inputs and outputs
+  //First
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  //Second
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
 }
 // hello dere no
 
 void loop()
 {
 
-
-  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-
-  // Read the signal from the sensor: a HIGH pulse whose
-  // duration is the time (in microseconds) from the sending
-  // of the ping to the reception of its echo off of an object.
-  pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, HIGH);
-
-  // convert the time into a distance
-  cm = (duration/2) / 29.1;
-  inches = (duration/2) / 74;
-
-  Serial.print(inches);
-  Serial.print("in, ");
-  Serial.print(cm);
-  Serial.print("cm");
-  Serial.println();
-  distance(cm, speaker);
-  delay(250);
-
+sensors(trigPin,echoPin);
+firstSen=cm;
+frequencyDistance(firstSen, speaker);
+sensors(trigPin2,echoPin2);
+secondSen= cm;
+frequencyDistance(secondSen, speaker);
 }
