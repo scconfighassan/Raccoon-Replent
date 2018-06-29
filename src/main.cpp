@@ -9,19 +9,34 @@
         Echo: Echo (OUTPUT) - Pin 12
         GND: GND
  */
- #include <Arduino.h>
-int trigPin = 11;    //Trig - green Jumper
-int echoPin = 12;    //Echo - yellow Jumper
+#include <Arduino.h>
+//First Ultrasonic Sensor
+int trigPin = 11;
+int echoPin = 12;
+//Second
+int trigPin2 = 10;
+int echoPin2 = 9;
 long duration, cm, inches;
 int speaker = 8;
+
+void distance(long cm, int speakerInput)
+{
+
+    tone(speakerInput,(100+cm)*100);
+      if (cm>20){
+
+      noTone(speakerInput);
+    }
+}
 void setup() {
-  //Serial Port begin
-  Serial.begin (9600);
+      //Serial Port begin
+      Serial.begin (9600);
   //Define inputs and outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 }
 // hello dere no
+
 void loop()
 {
 
@@ -49,9 +64,7 @@ void loop()
   Serial.print(cm);
   Serial.print("cm");
   Serial.println();
-  if (cm<20){
-  tone(speaker, cm*100);
-  }
+  distance(cm, speaker);
   delay(250);
 
 }
