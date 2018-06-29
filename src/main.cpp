@@ -5,27 +5,35 @@ int echoPin = 12;
 //Second
 int trigPin2 = 10;
 int echoPin2 = 9;
-long duration, cm, firstSen, secondSen;
+long firstSen, secondSen;
 int speaker = 8;
 
-void frequencyDistance(long cm, int speakerInput)
+void frequencyDistance(long cm1,long cm2, int speakerInput)
 {
 
-    tone(speakerInput,(100+cm)*100);
-      if (cm>20){
-
-      noTone(speakerInput);
+  if (cm2<20&&cm1>20){
+      tone(speakerInput,(100+cm2)*100);
     }
+
+  if (cm1<20&&cm2>20){
+    tone(speakerInput,(100+cm1)*100);
+  }
+
+  if ((cm1>20)&&(cm2>20)){
+
+    noTone(speakerInput);
+  }
+
 }
-void sensors(int trig, int echo){
+void sensors(int trig, int echo, long distance){
   digitalWrite(trig, LOW);
   delayMicroseconds(5);
   digitalWrite(trig, HIGH);
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
-  duration = pulseIn(echo, HIGH);
-  cm = (duration/2) / 29.1;
 
+  long duration = pulseIn(echo, HIGH);
+  distance = (duration/2) / 29.1;
 }
 void setup() {
       //Serial Port begin
@@ -38,15 +46,11 @@ void setup() {
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
 }
-// hello dere no
-
 void loop()
 {
 
-sensors(trigPin,echoPin);
-firstSen=cm;
-frequencyDistance(firstSen, speaker);
-sensors(trigPin2,echoPin2);
-secondSen= cm;
-frequencyDistance(secondSen, speaker);
+
+sensors(trigPin2,echoPin2,secondSen);
+sensors(trigPin,echoPin,firstSen);
+frequencyDistance(firstSen,secondSen,speaker);
 }
