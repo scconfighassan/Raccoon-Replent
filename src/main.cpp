@@ -1,3 +1,8 @@
+/*
+Author: Hassan Mahdi
+Date:
+Description: Raccooon Repellent based on Sound Frequency.
+*/
 #include <Arduino.h>
 //First Ultrasonic Sensor
 int trigPin = 11;
