@@ -5,21 +5,39 @@ int echoPin = 12;
 //Second
 int trigPin2 = 10;
 int echoPin2 = 9;
+//Third
+int trigPin3 = 6; //green jumper
+int echoPin3 = 7; //yellow jumper
+//Fourth
+int trigPin4 = 4; //orange
+int echoPin4 = 5; //red
+//speakerInput
 int speaker = 8;
-
-void frequencyDistance(long cm1,long cm2, int speakerInput)
+int speaker2= 2;
+void frequencyDistance(long cm1,long cm2, long cm3, long cm4, int speakerInput1, int speakerInput2)
 {
-  if (cm2<20&&cm1>20){
-      tone(speakerInput,(100+cm2)*100);
+  if (cm2<20&&cm1>20&&cm3>20&&cm4>20){
+      tone(speakerInput1,(10000));
+      tone(speakerInput2,(10000));
     }
 
-  if (cm1<20&&cm2>20){
-    tone(speakerInput,(100+cm1)*100);
+  if (cm1<20&&cm2>20&&cm3>20&&cm4>20){
+    tone(speakerInput1,10000);
+    tone(speakerInput2,10000);
   }
+  if (cm3<20&&cm2>20&&cm1>20&&cm4>20){
+    tone(speakerInput1,10000);
+    tone(speakerInput2,10000);
+  }
+  if (cm4<20&&cm2>20&&cm3>20&&cm1>20){
+    tone(speakerInput1,10000);
+    tone(speakerInput2,10000);
+  }
+  if ((cm1>20)&&(cm2>20)&&(cm3>20)&&(cm4>20)){
 
-  if ((cm1>20)&&(cm2>20)){
+    noTone(speakerInput1);
+    noTone(speakerInput2);
 
-    noTone(speakerInput);
   }
 
 }
@@ -44,10 +62,18 @@ void setup() {
   //Second
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
+  //Third
+  pinMode(trigPin3, OUTPUT);
+  pinMode(echoPin3, INPUT);
+  //Fourth
+  pinMode(trigPin4, OUTPUT);
+  pinMode(echoPin4, INPUT);
 }
 void loop()
   {
-    long d1= sensors(trigPin2,echoPin2);
-    long d2= sensors(trigPin,echoPin);
-    frequencyDistance(d1,d2,speaker);
+    long d1= sensors(trigPin,echoPin);
+    long d2= sensors(trigPin2,echoPin2);
+    long d3= sensors(trigPin3,echoPin3);
+    long d4= sensors(trigPin4,echoPin4);
+    frequencyDistance(d1,d2,d3,d4,speaker,speaker2);
   }
